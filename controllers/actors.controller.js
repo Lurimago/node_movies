@@ -1,54 +1,69 @@
 // Models
-const { Actor } = require('../models/actor.model');
+const { Actor } = require("../models/actor.model");
+const { ActorInMovie } = require("../models/actorInMovie.model");
 
 const getAllActors = async (req, res, next) => {
-	try {
-		const actors = await Actor.findAll();
+  try {
+    const actors = await Actor.findAll();
 
-		res.status(200).json({
-			status: 'success',
-			data: { actors },
-		});
-	} catch (error) {
-		console.log(error);
-	}
+    res.status(200).json({
+      status: "success",
+      data: { actors },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getActorById = async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const actor = await Actor.findOne({ where: { id } });
+  try {
+    const { id } = req.params;
+    const actor = await Actor.findOne({ where: { id } });
 
-		res.status(200).json({
-			status: 'success',
-			data: { actor },
-		});
-	} catch (error) {
-		console.log(error);
-	}
+    res.status(200).json({
+      status: "success",
+      data: { actor },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const createActor = async (req, res, next) => {
-	try {
-		const { name, country, age } = req.body;
+  try {
+    const { name, country, age } = req.body;
 
-		const newActor = await Actor.create({
-			name,
-			country,
-			age,
-		});
+    const newActor = await Actor.create({
+      name,
+      country,
+      age,
+    });
 
-		res.status(201).json({
-			status: 'success',
-			data: { newActor },
-		});
-	} catch (error) {
-		console.log(error);
-	}
+    res.status(201).json({
+      status: "success",
+      data: { newActor },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
+const assignActorToMovie = async (req, res) => {
+  try {
+    const { movieId, actorId } = req.body;
 
+    const actorInMovie = await ActorInMovie.create({ movieId, actorId });
+
+    res.status(201).json({
+      status: "success",
+      data: { actorInMovie },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 module.exports = {
-	getAllActors,
-	getActorById,
-	createActor,
+  getAllActors,
+  getActorById,
+  createActor,
+  assignActorToMovie,
 };
